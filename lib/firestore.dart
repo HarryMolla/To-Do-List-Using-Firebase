@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService{
@@ -23,6 +25,11 @@ return notes.doc(docID).update({
   'note': newNote,
   'timestamp': Timestamp.now()
 });
+}
+//DELETE: delete a note given a note ID
+Future deleteNote(String docID){
+  return notes.doc(docID).delete(
+  );
 }
 }
 
