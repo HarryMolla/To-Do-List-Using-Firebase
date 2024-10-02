@@ -25,7 +25,24 @@ class _MyAppState extends State<MyApp> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              content: TextField(controller: textController),
+             shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(10)
+             ),
+              content: TextField(
+                cursorColor: Colors.green,
+                decoration: InputDecoration(
+                 enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color:Colors.blueGrey),
+                  borderRadius: BorderRadius.circular(5)
+                 ),
+                 focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green),
+                  borderRadius: BorderRadius.circular(5)
+                 )
+                 
+                ),
+                controller: textController
+                ),
               actions: [
                 // Add Button
                 ElevatedButton(
@@ -62,11 +79,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 234, 247, 234),
         title: Text('To Do'),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
         onPressed: openNoteBox,
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white,),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestoreService.getNotesStream(),
@@ -75,7 +94,10 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.hasData) {
             List notesList = snapshot.data!.docs;
             //display as list view
-            return ListView.builder(
+            return ListView.separated(
+              separatorBuilder: (context, index) {
+                return Divider(thickness: 0.3, );
+              },
               itemCount: notesList.length,
               itemBuilder: (context, index) {
                 //get each individual document
@@ -87,6 +109,7 @@ class _MyAppState extends State<MyApp> {
                 String noteText = data['note'];
                 //display as list tail
                 return ListTile(
+                  
                   trailing: PopupMenuButton<int>(
                     onSelected: (value) {
                       if (value == 1) {
